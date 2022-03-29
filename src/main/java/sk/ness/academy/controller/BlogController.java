@@ -1,20 +1,17 @@
 package sk.ness.academy.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import sk.ness.academy.domain.Article;
+import sk.ness.academy.domain.Comment;
+import sk.ness.academy.dto.ArticleJ;
 import sk.ness.academy.dto.Author;
 import sk.ness.academy.dto.AuthorStats;
 import sk.ness.academy.service.ArticleService;
 import sk.ness.academy.service.AuthorService;
+import sk.ness.academy.service.CommentService;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 public class BlogController {
@@ -23,27 +20,42 @@ public class BlogController {
   private ArticleService articleService;
 
   @Resource
+  private CommentService commentService;
+
+  @Resource
   private AuthorService authorService;
 
   // ~~ Article
   @RequestMapping(value = "articles", method = RequestMethod.GET)
-  public List<Article> getAllArticles() {
+  public List<ArticleJ> getAllArticles() {
 	  return this.articleService.findAll();
   }
 
   @RequestMapping(value = "articles/{articleId}", method = RequestMethod.GET)
   public Article getArticle(@PathVariable final Integer articleId) {
-	  return this.articleService.findByID(articleId);
+    return this.articleService.findByID(articleId);
   }
 
   @RequestMapping(value = "articles/search/{searchText}", method = RequestMethod.GET)
   public List<Article> searchArticle(@PathVariable final String searchText) {
-	  throw new UnsupportedOperationException("Full text search not implemented.");
+	  return this.articleService.searchArticles(searchText);
   }
 
   @RequestMapping(value = "articles", method = RequestMethod.PUT)
   public void addArticle(@RequestBody final Article article) {
 	  this.articleService.createArticle(article);
+  }
+
+  @RequestMapping(value = "articles/{articleId}", method = RequestMethod.DELETE)
+  public void deleteArticle(@PathVariable final Integer articleId) {
+    this.articleService.deleteArticle(articleId);
+  }
+
+  //~~ Comment
+
+  @RequestMapping(value = "comments", method = RequestMethod.PUT)
+  public void addComment(@RequestBody final Comment comment) {
+    this.commentService.createComment(comment);
   }
 
   // ~~ Author
@@ -54,6 +66,7 @@ public class BlogController {
 
   @RequestMapping(value = "authors/stats", method = RequestMethod.GET)
   public List<AuthorStats> authorStats() {
+    //TODO findAllWithNumArt
 	  throw new UnsupportedOperationException("Author statistics not implemented.");
   }
 

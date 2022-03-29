@@ -1,12 +1,12 @@
 1. Introduce article delete functionality DELETE http://localhost:8080/articles/{articleId} where article with articleId is deleted from database
 
-2. Introduce Comments into the system. Every Article can have multiple comments.
+2. Introduce Comments into the system. Every Article can have multiple comment.
    Comment consists of - Author, Text, Created Date. 
 
-   List of all articles (GET http://localhost:8080/articles) should NOT include comments.
-   Returning single article details (GET http://localhost:8080/articles/{articleId}) should include list of comments that belongs to article
+   List of all articles (GET http://localhost:8080/articles) should NOT include comment.
+   Returning single article details (GET http://localhost:8080/articles/{articleId}) should include list of comment that belongs to article
 
-   Create API for creating, deleting and reading comments, comments cannot exist without article assigned
+   Create API for creating, deleting and reading comment, comment cannot exist without article assigned
 
 3. We need a way to ingest large number of articles at once from a file. 
 
