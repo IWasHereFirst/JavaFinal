@@ -16,13 +16,13 @@ public class CommentServiceImpl implements CommentService {
   private CommentDAO commentDAO;
 
   @Override
-  public Comment findByID(final Integer commentId) {
-	  return this.commentDAO.findByID(commentId);
+  public Comment findByID(final Integer articleId, final Integer commentId) {
+	  return this.commentDAO.findByID(articleId, commentId);
   }
 
   @Override
-  public List<Comment> findAll() {
-	  return this.commentDAO.findAll();
+  public List<Comment> findAll(final Integer articleId) {
+	  return this.commentDAO.findAll(articleId);
   }
 
   @Override
@@ -31,12 +31,7 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public void deleteComment(Integer comment) {
-    this.commentDAO.delete(comment);
-  }
-
-  @Override
-  public void ingestComment(final String jsonComment) {
-    throw new UnsupportedOperationException("Article ingesting not implemented.");
+  public void deleteComment(Integer articleId, Integer commentId) {
+    this.commentDAO.delete(articleId, commentId);
   }
 }

@@ -17,10 +17,6 @@ public class Article {
     this.createTimestamp = new Date();
   }
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // deletes also comments associated with Article
-  @JoinColumn(name = "article_id")
-  private List<Comment> comments = new ArrayList<>();
-
   @Id
   @Column(name = "id", unique = true, nullable = false, precision = 10, scale = 0)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "articles_seq_store")
@@ -38,6 +34,10 @@ public class Article {
   @Column(name = "create_timestamp")
   @Temporal(TemporalType.TIMESTAMP)
   private Date createTimestamp;
+
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // deletes also comments associated with Article
+  @JoinColumn(name = "article_id")
+  private List<Comment> comments = new ArrayList<>();
 
   public Integer getId() {
     return this.id;

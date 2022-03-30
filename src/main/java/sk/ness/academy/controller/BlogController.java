@@ -53,9 +53,29 @@ public class BlogController {
 
   //~~ Comment
 
+  // Display all comments associated with one article
+  @RequestMapping(value = "articles/{articleId}/comments", method = RequestMethod.GET)
+  public List<Comment> getAllComments(@PathVariable final Integer articleId) {
+    return this.commentService.findAll(articleId);
+  }
+
+  // Display one specific comment
+  @RequestMapping(value = "articles/{articleId}/comments/{commentId}", method = RequestMethod.GET)
+  public Comment getComment(@PathVariable final Integer articleId, @PathVariable final Integer commentId) {
+    return this.commentService.findByID(articleId, commentId);
+  }
+
+  // Create new comment
   @RequestMapping(value = "articles/{articleId}/comments", method = RequestMethod.PUT)
   public void addComment(@PathVariable final Integer articleId, @RequestBody final Comment comment) {
     this.commentService.createComment(articleId, comment);
+  }
+
+  // Delete specific comment
+  //TODO Chytit NullPointerException
+  @RequestMapping(value = "articles/{articleId}/comments/{commentId}", method = RequestMethod.DELETE)
+  public void removeComment(@PathVariable final Integer articleId, @PathVariable final Integer commentId){
+    this.commentService.deleteComment(articleId, commentId);
   }
 
   // ~~ Author

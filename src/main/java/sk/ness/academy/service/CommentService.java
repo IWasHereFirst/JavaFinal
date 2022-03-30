@@ -7,18 +7,15 @@ import java.util.List;
 public interface CommentService {
 
 	  /** Returns {@link Comment} with provided ID */
-	  Comment findByID(Integer commentId);
+	  Comment findByID(Integer articleId, Integer commentId);
 
 	  /** Returns all available {@link Comment}s */
-	  List<Comment> findAll();
+	  List<Comment> findAll(Integer articleId);
 
 	  /** Creates new {@link Comment} */
 	  void createComment(Integer articleId, Comment comment);
 
 	  /** Deletes {@link Comment} */
-	  void deleteComment(Integer comment);
-
-	  /** Creates new {@link Comment}s by ingesting all articles from json */
-	  void ingestComment(String jsonComment);
+	  void deleteComment(Integer articleId, Integer commentId);
 
 }
