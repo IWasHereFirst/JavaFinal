@@ -1,6 +1,8 @@
 package sk.ness.academy.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import sk.ness.academy.domain.Article;
 import sk.ness.academy.domain.Comment;
 import sk.ness.academy.dto.ArticleJ;
@@ -26,58 +28,74 @@ public class BlogController {
   private AuthorService authorService;
 
   // ~~ Article
+
+  // Displays specific article
+  @RequestMapping(value = "articles/{articleId}", method = RequestMethod.GET)
+  public Article getArticle(@PathVariable final Integer articleId) {
+    try {
+      return this.articleService.findByID(articleId);
+    } catch (NullPointerException e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  // Displays all articles
   @RequestMapping(value = "articles", method = RequestMethod.GET)
   public List<ArticleJ> getAllArticles() {
 	  return this.articleService.findAll();
   }
 
-  @RequestMapping(value = "articles/{articleId}", method = RequestMethod.GET)
-  public Article getArticle(@PathVariable final Integer articleId) {
-    return this.articleService.findByID(articleId);
-  }
-
+  // TODO implementovat
+  // Searches specific article
   @RequestMapping(value = "articles/search/{searchText}", method = RequestMethod.GET)
   public List<Article> searchArticle(@PathVariable final String searchText) {
 	  return this.articleService.searchArticles(searchText);
   }
 
+  // Creates new article
   @RequestMapping(value = "articles", method = RequestMethod.PUT)
   public void addArticle(@RequestBody final Article article) {
 	  this.articleService.createArticle(article);
   }
 
+  // Deletes article
   @RequestMapping(value = "articles/{articleId}", method = RequestMethod.DELETE)
   public void deleteArticle(@PathVariable final Integer articleId) {
-    this.articleService.deleteArticle(articleId);
+    try{
+      this.articleService.deleteArticle(articleId);
+    } catch (IllegalArgumentException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
   }
 
   //~~ Comment
 
-  // Display all comments associated with one article
+  // Displays all comments associated with one article
   @RequestMapping(value = "articles/{articleId}/comments", method = RequestMethod.GET)
   public List<Comment> getAllComments(@PathVariable final Integer articleId) {
     return this.commentService.findAll(articleId);
   }
 
-  // Display one specific comment
+  // Displays one specific comment
   @RequestMapping(value = "articles/{articleId}/comments/{commentId}", method = RequestMethod.GET)
   public Comment getComment(@PathVariable final Integer articleId, @PathVariable final Integer commentId) {
     return this.commentService.findByID(articleId, commentId);
   }
 
-  // Create new comment
+  // Creates new comment
   @RequestMapping(value = "articles/{articleId}/comments", method = RequestMethod.PUT)
   public void addComment(@PathVariable final Integer articleId, @RequestBody final Comment comment) {
     this.commentService.createComment(articleId, comment);
   }
 
-  // Delete specific comment
+  // Deletes specific comment
   //TODO Chytit NullPointerException
   @RequestMapping(value = "articles/{articleId}/comments/{commentId}", method = RequestMethod.DELETE)
   public void removeComment(@PathVariable final Integer articleId, @PathVariable final Integer commentId){
     this.commentService.deleteComment(articleId, commentId);
   }
 
+  // Deletes all comments in the article
   @RequestMapping(value = "articles/{articleId}/comments", method = RequestMethod.DELETE)
   public void removeAllComments(@PathVariable final Integer articleId){
     this.commentService.deleteAllComments(articleId);
