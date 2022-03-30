@@ -25,8 +25,10 @@ public class CommentHibernateDAO implements CommentDAO {
   }
 
   @Override
-  public void persist(final Comment comment) {
-    this.sessionFactory.getCurrentSession().saveOrUpdate(comment);
+  public void persist(final Integer articleId, final Comment comment) {
+    Comment comment1 = comment;
+    comment1.setArticle_id(articleId);
+    this.sessionFactory.getCurrentSession().saveOrUpdate(comment1);
   }
 
   @Override

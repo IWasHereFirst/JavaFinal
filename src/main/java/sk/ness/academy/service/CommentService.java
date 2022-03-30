@@ -13,7 +13,7 @@ public interface CommentService {
 	  List<Comment> findAll();
 
 	  /** Creates new {@link Comment} */
-	  void createComment(Comment comment);
+	  void createComment(Integer articleId, Comment comment);
 
 	  /** Deletes {@link Comment} */
 	  void deleteComment(Integer comment);

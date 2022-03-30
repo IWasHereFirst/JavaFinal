@@ -70,6 +70,4 @@ public class Comment {
   public void setCreateDate(final Date createTimestamp) {
     this.createDate = createTimestamp;
   }
-
-
 }

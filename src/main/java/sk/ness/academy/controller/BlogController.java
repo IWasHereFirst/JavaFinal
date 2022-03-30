@@ -53,9 +53,9 @@ public class BlogController {
 
   //~~ Comment
 
-  @RequestMapping(value = "comments", method = RequestMethod.PUT)
-  public void addComment(@RequestBody final Comment comment) {
-    this.commentService.createComment(comment);
+  @RequestMapping(value = "articles/{articleId}/comments", method = RequestMethod.PUT)
+  public void addComment(@PathVariable final Integer articleId, @RequestBody final Comment comment) {
+    this.commentService.createComment(articleId, comment);
   }
 
   // ~~ Author

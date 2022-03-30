@@ -13,7 +13,7 @@ public interface CommentDAO {
 	  List<Comment> findAll();
 
 	  /** Persists {@link Comment} into the DB */
-	  void persist(Comment comment);
+	  void persist(Integer articleId, Comment comment);
 
 	  /** Deletes {@link Comment} from DB*/
 	  void delete(Integer comment);
