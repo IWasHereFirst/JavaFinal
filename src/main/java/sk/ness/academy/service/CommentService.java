@@ -18,4 +18,7 @@ public interface CommentService {
 	  /** Deletes {@link Comment} */
 	  void deleteComment(Integer articleId, Integer commentId);
 
+	  /** Deletes all {@link Comment} */
+	  void deleteAllComments(Integer articleId);
+
 }

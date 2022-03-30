@@ -37,7 +37,6 @@ public class CommentHibernateDAO implements CommentDAO {
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-
   }
 
   @Override
@@ -60,6 +59,16 @@ public class CommentHibernateDAO implements CommentDAO {
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+  }
 
+  @Override
+  public void deleteAll(Integer articleId) {
+    List list = this.sessionFactory.getCurrentSession().createSQLQuery("select * from comments where article_id = '" + articleId + "'")
+            .addEntity(Comment.class).list();
+    if (list.size() != 0){
+      list.forEach(item -> this.sessionFactory.getCurrentSession().delete(item));
+    } else {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
   }
 }

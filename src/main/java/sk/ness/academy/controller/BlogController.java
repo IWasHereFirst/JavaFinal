@@ -78,6 +78,11 @@ public class BlogController {
     this.commentService.deleteComment(articleId, commentId);
   }
 
+  @RequestMapping(value = "articles/{articleId}/comments", method = RequestMethod.DELETE)
+  public void removeAllComments(@PathVariable final Integer articleId){
+    this.commentService.deleteAllComments(articleId);
+  }
+
   // ~~ Author
   @RequestMapping(value = "authors", method = RequestMethod.GET)
   public List<Author> getAllAuthors() {

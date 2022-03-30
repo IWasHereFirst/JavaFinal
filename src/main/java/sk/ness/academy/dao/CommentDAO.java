@@ -17,4 +17,7 @@ public interface CommentDAO {
 
 	  /** Deletes {@link Comment} from DB*/
 	  void delete(Integer articleId, Integer commentId);
-	}
+
+	  /** Deletes all {@link Comment} from DB*/
+	  void deleteAll(Integer articleId);
+}
