@@ -41,7 +41,8 @@ public class ArticleHibernateDAO implements ArticleDAO {
   }
 
   @Override
-  public List<Article> searchArticles(String text) {
-    return this.sessionFactory.getCurrentSession().createSQLQuery("select * from articles where author like '%"+text+"%' OR title like '%"+text+"%' OR text like '%"+text+"%'").addEntity(Article.class).list();
+  public List<ArticleJ> searchArticles(String text) {
+    return this.sessionFactory.getCurrentSession()
+            .createQuery("select new sk.ness.academy.dto.ArticleJ(id, title, text, author, createTimestamp) from Article where author like '%"+text+"%' OR title like '%"+text+"%' OR text like '%"+text+"%'", ArticleJ.class).list();
   }
 }

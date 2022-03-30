@@ -39,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> searchArticles(String text) {
+  public List<ArticleJ> searchArticles(String text) {
     return this.articleDAO.searchArticles(text);
   }
 

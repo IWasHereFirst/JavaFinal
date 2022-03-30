@@ -17,7 +17,7 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public Comment findByID(final Integer articleId, final Integer commentId) {
-	  return this.commentDAO.findByID(articleId, commentId);
+	  return this.commentDAO.findByID(commentId);
   }
 
   @Override
@@ -26,17 +26,17 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public void createComment(final Integer articleId, final Comment comment) {
-	  this.commentDAO.persist(articleId, comment);
+  public void createComment(final Comment comment) {
+	  this.commentDAO.persist(comment);
   }
 
   @Override
-  public void deleteComment(Integer articleId, Integer commentId) {
-    this.commentDAO.delete(articleId, commentId);
+  public void deleteComment(Comment comment) {
+    this.commentDAO.delete(comment);
   }
 
   @Override
-  public void deleteAllComments(Integer articleId) {
-    this.commentDAO.deleteAll(articleId);
+  public void deleteAllComments(Comment comment) {
+    this.commentDAO.deleteAll(comment);
   }
 }

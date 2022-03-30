@@ -23,6 +23,6 @@ public interface ArticleService {
 	  void ingestArticles(String jsonArticles);
 
 	  /** Search {@link Article} */
-	  List<Article> searchArticles(String text);
+	  List<ArticleJ> searchArticles(String text);
 
 }

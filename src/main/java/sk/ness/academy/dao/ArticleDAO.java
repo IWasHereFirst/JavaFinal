@@ -20,5 +20,5 @@ public interface ArticleDAO {
 	  void delete(Integer article);
 
 	  /** Search {@link Article} from DB*/
-	  List<Article> searchArticles(String text);
+	  List<ArticleJ> searchArticles(String text);
 	}
