@@ -61,8 +61,8 @@ class BlogControllerTest {
     @Test
     void addArticle() {
         String input = "{" +
-                "\"title\": \"Skusanie API\"," +
-                "\"text\": \"Toto je len na test\"," +
+                "\"title\": \"Testing API\"," +
+                "\"text\": \"This is just a test\"," +
                 "\"author\": \"Daniel Danielowicz\"" +
                 "}";
         given().contentType(ContentType.JSON).body(input).when().put(url + "articles")
@@ -128,17 +128,41 @@ class BlogControllerTest {
 
     @Test
     void removeComment() {
+        List<ArticleJ> articleList = this.articleService.findAll();
+        if (articleList.size() != 0){
+            int articleId = articleList.get(0).getId();
+            List<Comment> commentList = this.commentService.findAll(articleId);
+            int commentId = 0;
+            if (commentList.size() != 0) {
+                commentId = commentList.get(0).getId();
+                given().when().delete(url + "articles/" + articleId + "/comments/" + commentId).then().statusCode(200);
+            } else {
+                given().when().delete(url + "articles/" + articleId + "/comments/" + commentId).then().statusCode(404);
+            }
+        }
     }
 
     @Test
     void removeAllComments() {
+        List<ArticleJ> articleList = this.articleService.findAll();
+        if (articleList.size() != 0){
+            int articleId = articleList.get(0).getId();
+            List<Comment> commentList = this.commentService.findAll(articleId);
+            if (commentList.size() != 0) {
+                given().when().delete(url + "articles/" + articleId + "/comments").then().statusCode(200);
+            } else {
+                given().when().delete(url + "articles/" + articleId + "/comments").then().statusCode(404);
+            }
+        }
     }
 
     @Test
     void getAllAuthors() {
+            given().when().get(url + "authors").then().statusCode(200);
     }
 
     @Test
     void authorStats() {
+            given().when().get(url + "authors/stats").then().statusCode(200);
     }
 }
