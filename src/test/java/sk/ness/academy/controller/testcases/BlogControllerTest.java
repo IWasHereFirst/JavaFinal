@@ -43,11 +43,23 @@ public class BlogControllerTest {
     }
 
     @Test
-    void fillDBGetItemsDeleteItems(){
-
+    void fillDBGetItemsAndDelete(){
+        addArticle();
+        getArticle();
+        addArticle();
+        getAllArticles();
+        deleteArticle();
+        addComment();
+        getComment();
+        addComment();
+        getAllComments();
+        addComment();
+        removeComment();
+        removeAllComments();
+        addComment();
+        deleteArticle();
     }
 
-    @Test
     void getArticle() {
         int articleId = 0;
         List<ArticleJ> articleList = this.articleService.findAll();
@@ -60,12 +72,10 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void getAllArticles() {
         given().when().get(url + "articles").then().statusCode(200);
     }
 
-    @Test
     void searchArticle() {
         String text = "";
         List<ArticleJ> articleList = this.articleService.findAll();
@@ -78,7 +88,6 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void addArticle() {
         String input = "{" +
                 "\"title\": \"Testing API\"," +
@@ -89,7 +98,6 @@ public class BlogControllerTest {
                 .then().assertThat().statusCode(200);
     }
 
-    @Test
     void deleteArticle() {
         int articleId = 0;
         List<ArticleJ> articleList = this.articleService.findAll();
@@ -102,7 +110,6 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void getAllComments() {
         List<ArticleJ> articleList = this.articleService.findAll();
         int artSize = articleList.size();
@@ -117,7 +124,6 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void getComment() {
         List<ArticleJ> articleList = this.articleService.findAll();
         int artSize = articleList.size();
@@ -135,7 +141,6 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void addComment() {
         String input = "{" +
                 "\"author\": \"Testing comment\"," +
@@ -151,7 +156,6 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void removeComment() {
         List<ArticleJ> articleList = this.articleService.findAll();
         int artSize = articleList.size();
@@ -169,7 +173,6 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void removeAllComments() {
         List<ArticleJ> articleList = this.articleService.findAll();
         int artSize = articleList.size();
@@ -184,12 +187,10 @@ public class BlogControllerTest {
         }
     }
 
-    @Test
     void getAllAuthors() {
             given().when().get(url + "authors").then().statusCode(200);
     }
 
-    @Test
     void authorStats() {
             given().when().get(url + "authors/stats").then().statusCode(200);
     }
