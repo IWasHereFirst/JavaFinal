@@ -1,14 +1,17 @@
 package sk.ness.academy.service;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
+import sk.ness.academy.dao.ArticleDAO;
+import sk.ness.academy.domain.Article;
+import sk.ness.academy.dto.ArticleJ;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-
-import sk.ness.academy.dao.ArticleDAO;
-import sk.ness.academy.domain.Article;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,7 +26,7 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> findAll() {
+  public List<ArticleJ> findAll() {
 	  return this.articleDAO.findAll();
   }
 
@@ -33,8 +36,23 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public void ingestArticles(final String jsonArticles) {
-    throw new UnsupportedOperationException("Article ingesting not implemented.");
+  public void deleteArticle(Integer article) {
+    this.articleDAO.delete(article);
   }
 
+  @Override
+  public List<ArticleJ> searchArticles(String text) {
+    return this.articleDAO.searchArticles(text);
+  }
+
+  @Override
+  public void ingestArticles(final String jsonArticles) {
+    ObjectMapper objMapper = new ObjectMapper();
+    try{
+      Article[] article = objMapper.readValue(new File(jsonArticles), Article[].class);
+      Arrays.stream(article).forEach(a -> this.articleDAO.persist(a));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

@@ -17,15 +17,17 @@ import sk.ness.academy.service.ArticleService;
 @Import(DatabaseConfig.class)
 public class ArticleIngester {
 
+  private ArticleService articleService;
+
   public static void main(final String[] args) {
     try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ArticleIngester.class)) {
       context.registerShutdownHook();
 
       final ArticleService articleService = context.getBean(ArticleService.class);
 
-      // Load file with articles and ingest
 
-      articleService.ingestArticles(null);
+      articleService.ingestArticles("articles_to_ingest.txt");
+      // Load file with articles and ingest
     }
   }
 }

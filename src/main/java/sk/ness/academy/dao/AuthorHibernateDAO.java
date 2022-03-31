@@ -1,15 +1,12 @@
 package sk.ness.academy.dao;
 
-import java.util.List;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+import sk.ness.academy.dto.Author;
+import sk.ness.academy.dto.AuthorStats;
 
 import javax.annotation.Resource;
-
-import org.hibernate.SessionFactory;
-import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.type.StringType;
-import org.springframework.stereotype.Repository;
-
-import sk.ness.academy.dto.Author;
+import java.util.List;
 
 @Repository
 public class AuthorHibernateDAO implements AuthorDAO {
@@ -20,10 +17,13 @@ public class AuthorHibernateDAO implements AuthorDAO {
   @SuppressWarnings("unchecked")
   @Override
   public List<Author> findAll() {
-    return this.sessionFactory.getCurrentSession().createSQLQuery("select distinct a.author as name from articles a ")
-        .addScalar("name", StringType.INSTANCE)
-        .setResultTransformer(new AliasToBeanResultTransformer(Author.class)).list();
+    return this.sessionFactory.getCurrentSession().createQuery("select distinct new sk.ness.academy.dto.Author(author) from Article", Author.class).list();
   }
 
+  @Override
+  public List<AuthorStats> getAuthorsStats() {
+    return this.sessionFactory.getCurrentSession()
+            .createQuery("select new sk.ness.academy.dto.AuthorStats(count(id), author) from Article group by author", AuthorStats.class).list();
+  }
 }
 

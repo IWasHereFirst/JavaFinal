@@ -1,14 +1,13 @@
 package sk.ness.academy.service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
+import sk.ness.academy.dao.AuthorDAO;
+import sk.ness.academy.dto.Author;
+import sk.ness.academy.dto.AuthorStats;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-
-import org.springframework.stereotype.Service;
-
-import sk.ness.academy.dao.AuthorDAO;
-import sk.ness.academy.dto.Author;
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,4 +21,8 @@ public class AuthorServiceImpl implements AuthorService {
     return this.authorDAO.findAll();
   }
 
+  @Override
+  public List<AuthorStats> getAuthorsStats() {
+    return this.authorDAO.getAuthorsStats();
+  }
 }
