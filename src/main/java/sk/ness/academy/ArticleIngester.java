@@ -25,9 +25,9 @@ public class ArticleIngester {
 
       final ArticleService articleService = context.getBean(ArticleService.class);
 
-
-      articleService.ingestArticles("articles_to_ingest.txt");
       // Load file with articles and ingest
+      articleService.ingestArticles("articles_to_ingest.txt");
+
     }
   }
 }
