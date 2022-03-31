@@ -1,4 +1,4 @@
-package sk.ness.academy.controller;
+package sk.ness.academy.controller.testcases;
 
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 
 @SpringBootTest
-class BlogControllerTest {
+public class BlogControllerTest {
 
     static String url = "http://localhost:8080/";
 
@@ -28,13 +28,32 @@ class BlogControllerTest {
     @Resource
     private AuthorService authorService;
 
+    @Test
+    void emptyDBRequests(){
+        getAllAuthors();
+        authorStats();
+        removeComment();
+        removeAllComments();
+        getComment();
+        getAllComments();
+        deleteArticle();
+        searchArticle();
+        getArticle();
+        getAllArticles();
+    }
+
+    @Test
+    void fillDBGetItemsDeleteItems(){
+
+    }
 
     @Test
     void getArticle() {
         int articleId = 0;
         List<ArticleJ> articleList = this.articleService.findAll();
-        if(articleList.size() != 0) {
-            articleId =  articleList.get(0).getId();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            articleId =  articleList.get(artSize-1).getId();
             given().when().get(url + "articles/" + articleId).then().statusCode(200);
         } else {
             given().when().get(url + "articles/" + articleId).then().statusCode(404);
@@ -50,8 +69,9 @@ class BlogControllerTest {
     void searchArticle() {
         String text = "";
         List<ArticleJ> articleList = this.articleService.findAll();
-        if(articleList.size() != 0) {
-            text =  articleList.get(0).getText();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            text =  articleList.get(artSize-1).getText();
             given().when().get(url + "articles/search/" + text).then().statusCode(200);
         } else {
             given().when().get(url + "articles/search/"  + text).then().statusCode(400);
@@ -73,8 +93,9 @@ class BlogControllerTest {
     void deleteArticle() {
         int articleId = 0;
         List<ArticleJ> articleList = this.articleService.findAll();
-        if(articleList.size() != 0) {
-            articleId =  articleList.get(0).getId();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            articleId =  articleList.get(artSize-1).getId();
             given().when().delete(url + "articles/" + articleId).then().statusCode(200);
         } else {
             given().when().delete(url + "articles/" + articleId).then().statusCode(404);
@@ -84,8 +105,9 @@ class BlogControllerTest {
     @Test
     void getAllComments() {
         List<ArticleJ> articleList = this.articleService.findAll();
-        if (articleList.size() != 0){
-            int articleId = articleList.get(0).getId();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            int articleId =  articleList.get(artSize-1).getId();
             List<Comment> commentList = this.commentService.findAll(articleId);
             if (commentList.size() != 0) {
                 given().when().get(url + "articles/" + articleId + "/comments").then().statusCode(200);
@@ -98,12 +120,14 @@ class BlogControllerTest {
     @Test
     void getComment() {
         List<ArticleJ> articleList = this.articleService.findAll();
-        if (articleList.size() != 0){
-            int articleId = articleList.get(0).getId();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            int articleId =  articleList.get(artSize-1).getId();
             List<Comment> commentList = this.commentService.findAll(articleId);
             int commentId = 0;
-            if (commentList.size() != 0) {
-                commentId = commentList.get(0).getId();
+            int commSize = commentList.size();
+            if (commSize != 0) {
+                commentId = commentList.get(commSize-1).getId();
                 given().when().get(url + "articles/" + articleId + "/comments/" + commentId).then().statusCode(200);
             } else {
                 given().when().get(url + "articles/" + articleId + "/comments/" + commentId).then().statusCode(404);
@@ -119,8 +143,9 @@ class BlogControllerTest {
                 "}";
         int articleId = 0;
         List<ArticleJ> articleList = this.articleService.findAll();
-        if(articleList.size() != 0) {
-            articleId = articleList.get(0).getId();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            articleId =  articleList.get(artSize-1).getId();
             given().contentType(ContentType.JSON).body(input).when().put(url + "articles/" + articleId + "/comments")
                     .then().assertThat().statusCode(200);
         }
@@ -129,12 +154,14 @@ class BlogControllerTest {
     @Test
     void removeComment() {
         List<ArticleJ> articleList = this.articleService.findAll();
-        if (articleList.size() != 0){
-            int articleId = articleList.get(0).getId();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            int articleId =  articleList.get(artSize-1).getId();
             List<Comment> commentList = this.commentService.findAll(articleId);
             int commentId = 0;
-            if (commentList.size() != 0) {
-                commentId = commentList.get(0).getId();
+            int commSize = commentList.size();
+            if (commSize != 0) {
+                commentId = commentList.get(commSize-1).getId();
                 given().when().delete(url + "articles/" + articleId + "/comments/" + commentId).then().statusCode(200);
             } else {
                 given().when().delete(url + "articles/" + articleId + "/comments/" + commentId).then().statusCode(404);
@@ -145,8 +172,9 @@ class BlogControllerTest {
     @Test
     void removeAllComments() {
         List<ArticleJ> articleList = this.articleService.findAll();
-        if (articleList.size() != 0){
-            int articleId = articleList.get(0).getId();
+        int artSize = articleList.size();
+        if(artSize != 0) {
+            int articleId =  articleList.get(artSize-1).getId();
             List<Comment> commentList = this.commentService.findAll(articleId);
             if (commentList.size() != 0) {
                 given().when().delete(url + "articles/" + articleId + "/comments").then().statusCode(200);
