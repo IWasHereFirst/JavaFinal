@@ -1,6 +1,5 @@
 package sk.ness.academy.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import sk.ness.academy.dao.ArticleDAO;
@@ -9,6 +8,9 @@ import sk.ness.academy.dto.ArticleJ;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -47,9 +49,9 @@ public class ArticleServiceImpl implements ArticleService {
   public void ingestArticles(final String jsonArticles) {
     ObjectMapper objMapper = new ObjectMapper();
     try{
-      Article[] article = objMapper.readValue(jsonArticles, Article[].class);
-      for (Article a: article) this.articleDAO.persist(a);
-    } catch (JsonProcessingException e) {
+      Article[] article = objMapper.readValue(new File(jsonArticles), Article[].class);
+      Arrays.stream(article).forEach(a -> this.articleDAO.persist(a));
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
